@@ -21,7 +21,7 @@ CORRECT_ADDRESS = "Level 3, 345 George Street, SYDNEY NSW 2000, Australia. ACN: 
 ## Usage
 
 ```bash
-pip install pdfplumber pypdf
+pip install -r requirements.txt
 
 python3 sort_invoices.py             # sort the invoices
 python3 sort_invoices.py --dry-run   # show what would happen, move nothing

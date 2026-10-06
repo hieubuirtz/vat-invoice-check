@@ -16,7 +16,7 @@ Usage:
     python3 sort_invoices.py             # move files
     python3 sort_invoices.py --dry-run   # show what would happen, move nothing
 
-Requires: pdfplumber and/or pypdf (pip install pdfplumber pypdf).
+Requires: pdfplumber and/or pypdf (pip install -r requirements.txt).
 """
 
 import argparse
@@ -40,6 +40,24 @@ INBOX_DIR = "invoice-in"
 INCORRECT_DIR = "incorrect-invoice"
 
 # --------------------------------------------------------------- text extraction
+
+
+def check_dependencies():
+    """Exit with install instructions if no PDF library is available.
+
+    Without this, a missing library would look like an unreadable invoice and
+    every file would be moved to incorrect-invoice/.
+    """
+    for module in ("pdfplumber", "pypdf"):
+        try:
+            __import__(module)
+            return
+        except ImportError:
+            continue
+    sys.exit(
+        "No PDF library found. Install one (nothing was moved):\n"
+        "    pip install -r requirements.txt"
+    )
 
 
 def extract_texts(path):
@@ -280,6 +298,7 @@ def main():
     ap = argparse.ArgumentParser(description="Sort VAT invoices by buyer validity.")
     ap.add_argument("--dry-run", action="store_true", help="report only, move nothing")
     args = ap.parse_args()
+    check_dependencies()
 
     root = Path(__file__).resolve().parent
     inbox = root / INBOX_DIR
