@@ -1,0 +1,5 @@
+.DS_Store
+__pycache__/
+
+# Invoices are business records, keep them out of version control
+*.pdf
